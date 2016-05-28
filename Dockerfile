@@ -22,7 +22,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 	unzip \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
-
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends git-core
 # "git clone" is cached, we need to invalidate the docker cache here
 # to use this add a --build-arg INVALIDATEBUILD=$(data) to your docker build
 # parameter.
@@ -66,6 +68,8 @@ RUN curl -fSL https://github.com/vector-im/vector-web/archive/$BV_VEC.zip -o v.z
     && mv vector-web-$BV_VEC vector-web \
     && cd vector-web \
     && npm install \
+    && sed -i 's/matrix.org/matrix.allmende.io/' config.json \
+    && sed -i 's/vector.im/vector.allmende.io/' config.json \
     && npm run build
 
 ADD adds/start.sh /start.sh
