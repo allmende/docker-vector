@@ -61,7 +61,8 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 # --
   && npm install -g webpack http-server
 
-ENV BV_VEC=master
+ENV BV_VEC=release-v0.7.3
+
 RUN curl -fSL https://github.com/vector-im/vector-web/archive/$BV_VEC.zip -o v.zip \
     && unzip v.zip \
     && rm v.zip \
@@ -69,7 +70,7 @@ RUN curl -fSL https://github.com/vector-im/vector-web/archive/$BV_VEC.zip -o v.z
     && cd vector-web \
     && npm install \
     && sed -i 's/matrix.org/matrix.allmende.io/' config.json \
-    && sed -i 's/vector.im/vector.allmende.io/' config.json \
+    && sed -i 's/vector.im/matrix.org/' config.json \
     && npm run build
 
 ADD adds/start.sh /start.sh
